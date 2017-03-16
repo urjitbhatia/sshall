@@ -1,0 +1,35 @@
+#!/usr/bin/python
+
+import yaml
+import sys
+import subprocess
+
+#############################################
+# This currently works with ASG names only. #
+#############################################
+
+defaultYaml = r'''
+windows:
+  - name: multi ssh
+    root: .
+    layout: tiled
+    panes:
+'''
+
+describe_cmd = '''aws ec2 describe-instances --filter Name="instance-state-name",Values="running" "Name=tag:aws:autoscaling:groupName,Values=*%s*" --query  'Reservations[].Instances[].[PrivateIpAddress]' --output text'''
+
+try:
+    termConf = yaml.load(defaultYaml)
+    cmd = describe_cmd % sys.argv[1]
+    destFile = open(sys.argv[2], 'w+')
+    targetCall = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE)
+    targets = targetCall.stdout.readlines()
+    panes = termConf['windows'][0]['panes'] = []
+
+    for t in targets:
+        if len(t) > 0 and t is not '\n':
+            panes.append('ssh ' + t.strip('\n'))
+    yaml.dump(termConf, destFile, default_flow_style=True, indent=2)
+    destFile.close()
+except yaml.YAMLError as exc:
+    print(exc)
