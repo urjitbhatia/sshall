@@ -13,3 +13,6 @@ PWD=`pwd`
 mv $PWD/sshall /usr/local/bin/sshall
 mv $PWD/ec2sshpanes /usr/local/bin/ec2sshpanes
 chmod +x /usr/local/bin/sshall
+
+rm -- "$0"
+
