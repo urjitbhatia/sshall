@@ -32,4 +32,5 @@ try:
     yaml.dump(termConf, destFile, default_flow_style=True, indent=2)
     destFile.close()
 except yaml.YAMLError as exc:
+    print("Failed to run: ")
     print(exc)
