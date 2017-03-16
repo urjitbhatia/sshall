@@ -16,8 +16,6 @@ Quick and easy way to ssh into multiple EC2 instances based on ASG names.
 
 
 ### Installation
-
-In an appropriate directory (don't choose /tmp)
 `curl -L https://github.com/urjitbhatia/sshall/releases/download/v1.0/sshall.tar.gz | tar xv && ./install`
 
 ### Usage
