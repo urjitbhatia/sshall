@@ -1,0 +1,4 @@
+#!/bin/bash
+
+./ec2sshpanes $1 ~/.itermocil/$1.yml && itermocil $1
+
