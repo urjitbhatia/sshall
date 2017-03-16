@@ -8,10 +8,10 @@ Quick and easy way to ssh into multiple EC2 instances based on ASG names.
 ##### Manual installations:
 
 - [iTerm2](https://iterm2.com/downloads.html) - Please install this first if you don't have iterm2.
+- [homebrew](https://brew.sh/)
 
 ##### sshall automatic installations:
 
-- [homebrew](https://brew.sh/)
 - [itermocil](https://github.com/TomAnthony/itermocil)
 
 

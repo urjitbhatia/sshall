@@ -1,0 +1,14 @@
+#!/bin/bash
+
+which itermocil &> /dev/null
+if [ $? -ne 0 ];
+then
+	brew update
+	brew install TomAnthony/brews/itermocil
+	mkdir ~/.itermocil
+fi
+
+PWD=`pwd`
+ln -sf $PWD/sshall /usr/local/bin/sshall2
+chmod +x /usr/local/bin/sshall2
+
