@@ -3,6 +3,7 @@
 which itermocil &> /dev/null
 if [ $? -ne 0 ];
 then
+	echo "Installing itermocil using brew"
 	brew update
 	brew install TomAnthony/brews/itermocil
 	mkdir ~/.itermocil
