@@ -10,7 +10,6 @@ then
 fi
 
 PWD=`pwd`
-mv $PWD/sshall /usr/local/bin/sshall
-mv $PWD/ec2sshpanes /usr/local/bin/ec2sshpanes
+mv $PWD/ec2sshpanes /usr/local/bin/sshall
 chmod +x /usr/local/bin/sshall
 

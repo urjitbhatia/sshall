@@ -48,7 +48,14 @@ def sshDarwin(targets, asgFilter):
                 sshCommand = 'ssh ' + t.strip('\n')
                 panes.append(sshCommand)
             
-            destFile = open(os.path.expanduser('~/.itermocil/%s.yml' % asgFilter), 'w+')
+            destFilePath = os.path.expanduser('~/.itermocil/%s.yml' % asgFilter)
+            if not os.path.exists(os.path.dirname(destFilePath)):
+                try:
+                    os.makedirs(os.path.dirname(destFilePath))
+                except OSError as exc: # Guard against race condition
+                    if exc.errno != errno.EEXIST:
+                        raise
+            destFile = open(destFilePath, 'w+')
             yaml.dump(termConf, destFile, default_flow_style=True, indent=2)
             destFile.close()
 
@@ -70,8 +77,12 @@ asgFilter = sys.argv[1]
 if system == 'Darwin':
     # Check that itermocil is installed
     if not any(os.access(os.path.join(path, 'itermocil'), os.X_OK) for path in os.environ['PATH'].split(os.pathsep)):
-        print('itermocil not found in system path. Install itermocil first')
-        sys.exit(1)
+        print('itermocil not found in system path. Installing itermocil first')
+        brewInstall = subprocess.Popen('brew update && brew install TomAnthony/brews/itermocil', shell=True, subprocess.PIPE)
+        brewInstall.poll()
+        if brewInstall.returncode is not 0:
+            print('Failed to install itermocil, please install it manually')
+            sys.exit(1)
 
     sshDarwin(getTargets(asgFilter), asgFilter)
 elif system == 'Linux':
