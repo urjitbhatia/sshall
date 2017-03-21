@@ -33,7 +33,7 @@ def sshLinux(targets):
         for t in targets:
             if system == 'Linux':
                 linux_commands += 'bash -c "%s" || bash' % ssh_command 
-        subprocess.check_output('terminator-split/terminator-split -e %s localhost' % linux_commands)
+        subprocess.check_output('terminator-split -e %s localhost' % linux_commands)
     else:
         print('No matching targets founds for query:\n\t%s' % (DESCRIBE_EC2_CMD % asgFilter))
         sys.exit(3)

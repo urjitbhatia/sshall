@@ -4,3 +4,4 @@ mv $PWD/ec2sshpanes /usr/local/bin/sshall
 mv $PWD/terminator-split/terminator-split /usr/local/bin/terminator-split
 chmod +x /usr/local/bin/sshall
 chmod +x /usr/local/bin/terminator-split
+rm $PWD/terminator-split -rf
