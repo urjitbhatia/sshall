@@ -29,6 +29,7 @@ def getTargets(asgFilter):
     return list(filter(lambda t: len(t) >0 and t is not '\n', targets))
 
 def sshLinux(targets):
+    linux_commands = ""
     if targets:
         for t in targets:
             if system == 'Linux':
