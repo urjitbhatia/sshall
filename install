@@ -1,7 +1,9 @@
 #!/bin/bash
 PWD=`pwd`
 mv $PWD/ec2sshpanes /usr/local/bin/sshall
+mv $PWD/terminator-split/terminator-split /usr/local/bin/terminator-split
 chmod +x /usr/local/bin/sshall
+chmod +x /usr/local/bin/terminator-split
 
 # only enable next line while creating release tarball
 # rm -- "$0"
