@@ -5,30 +5,37 @@ Quick and easy way to ssh into multiple EC2 instances based on ASG names.
 
 ### Requirements
 
+#### MacOS:
 ##### Manual installations:
-
 - [iTerm2](https://iterm2.com/downloads.html) - Please install this first if you don't have iterm2.
 - [homebrew](https://brew.sh/)
-- AWS CLI:  `brew install awscli`
+- AWS CLI:  `brew install awscli` and then make sure you configure it using `aws configure`
 
 ##### sshall automatic installations:
-
 - [itermocil](https://github.com/TomAnthony/itermocil)
 
+#### Ubuntu:
+##### Manual installations:
+- [terminator](https://apps.ubuntu.com/cat/applications/precise/terminator/) - Please install this first if you don't have terminator installed: `sudo apt-get install terminator`
+- [python module: configobj](http://configobj.readthedocs.io/en/latest/configobj.html) : `sudo pip install configobj`
+- AWS CLI:  `sudo apt-get install awscli` and then make sure you configure it using `aws configure`
 
 ### Installation
+In an appropriate directory
 `curl -L https://github.com/urjitbhatia/sshall/releases/download/v1.0/sshall.tar.gz | tar xv && ./install`
 
 ### Usage
-
-In an iterm2 window:
+In your favorite terminal window:
 
 ```bash
 sshall myBestAutoScalingGroup
 ```
 
-*Protip* : use `apple + shift + i` to type into all the panes simultaneously (iTerm2 feature)
+### Note:
+Opening multiple ssh windows for large number of instances can cause your machine to run out of memory. `sshall` will warn if if finds more than 15 target instances to ssh into.
 
+=======
+*Mac users Protip* : use `apple + shift + i` to type into all the panes simultaneously (iTerm2 feature)
 
 #### Caveats
 

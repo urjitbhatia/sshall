@@ -1,0 +1,3 @@
+[submodule "terminator-split"]
+	path = terminator-split
+	url = https://github.com/AlekseyChudov/terminator-split
