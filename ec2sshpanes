@@ -89,7 +89,7 @@ asgFilter = sys.argv[1]
 if system == 'Darwin':
     # Check that itermocil is installed
     if not any(os.access(os.path.join(path, 'itermocil'), os.X_OK) for path in os.environ['PATH'].split(os.pathsep)):
-        print('itermocil not found in system path. Installing itermocil first')
+        print('itermocil not found in system path. Installing itermocil first...')
         brewInstall = subprocess.Popen('brew update && brew install TomAnthony/brews/itermocil', shell=True, stdout=subprocess.PIPE)
         brewInstall.poll()
         if brewInstall.returncode is not 0:
