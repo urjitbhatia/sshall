@@ -3,6 +3,7 @@
 import yaml
 import sys
 import subprocess
+import platform
 
 #############################################
 # This currently works with ASG names only. #
@@ -26,9 +27,17 @@ try:
     targets = targetCall.stdout.readlines()
     panes = termConf['windows'][0]['panes'] = []
 
+    system = platform.system()
+    liux_command = ""
     for t in targets:
         if len(t) > 0 and t is not '\n':
-            panes.append('ssh ' + t.strip('\n'))
+            ssh_command = "ssh " + t.strip('\n')
+            if system == 'Darwin':
+                panes.append(ssh_command)
+            if system == 'Linux':
+                linux_commands += "'bash %s '" % ssh_command 
+    if system == 'Linux':
+        subprocess.check_output('terminator-split -e %s localhost' % linux_commands)
     yaml.dump(termConf, destFile, default_flow_style=True, indent=2)
     destFile.close()
 except yaml.YAMLError as exc:
