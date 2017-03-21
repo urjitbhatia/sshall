@@ -1,15 +1,7 @@
 #!/bin/bash
-
-which itermocil &> /dev/null
-if [ $? -ne 0 ];
-then
-	echo "Installing itermocil using brew"
-	brew update
-	brew install TomAnthony/brews/itermocil
-	mkdir ~/.itermocil
-fi
-
 PWD=`pwd`
 mv $PWD/ec2sshpanes /usr/local/bin/sshall
 chmod +x /usr/local/bin/sshall
 
+# only enable next line while creating release tarball
+# rm -- "$0"
