@@ -38,6 +38,7 @@ def getTargets(asgFilter):
             return targets
         elif choice in no:
             sys.exit(0)
+    return targets
 
 def sshLinux(targets):
     linux_commands = ""
@@ -55,11 +56,11 @@ def sshDarwin(targets, asgFilter):
         try:
             termConf = yaml.load(defaultYaml)
             panes = termConf['windows'][0]['panes'] = []
-            
+
             for t in targets:
                 sshCommand = 'ssh ' + t.strip('\n')
                 panes.append(sshCommand)
-            
+
             destFilePath = os.path.expanduser('~/.itermocil/%s.yml' % asgFilter)
             if not os.path.exists(os.path.dirname(destFilePath)):
                 try:
