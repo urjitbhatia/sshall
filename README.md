@@ -22,7 +22,7 @@ Quick and easy way to ssh into multiple EC2 instances based on ASG names.
 
 ### Installation
 In an appropriate directory
-`curl -L https://github.com/urjitbhatia/sshall/releases/download/v2.0/sshall.tar.gz | tar xv && ./install`
+`curl -L https://github.com/urjitbhatia/sshall/releases/download/v3.1/sshall.tar.gz | tar xv && ./install`
 
 ### Usage
 In your favorite terminal window:
