@@ -1,7 +1,9 @@
 #!/bin/bash
 PWD=`pwd`
+pip install -r requirements.txt
 mv $PWD/ec2sshpanes /usr/local/bin/sshall
-mv $PWD/terminator-split /usr/local/bin/terminator-split
+mv $PWD/terminator-split/terminator-split /usr/local/bin/terminator-split
 chmod +x /usr/local/bin/sshall
 chmod +x /usr/local/bin/terminator-split
 rm -rf $PWD/terminator-split
+rm -rf $PWD/requirements.txt

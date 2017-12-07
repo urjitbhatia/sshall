@@ -23,16 +23,18 @@ windows:
 DESCRIBE_EC2_CMD = '''aws ec2 describe-instances --filter Name="instance-state-name",Values="running" "Name=tag:aws:autoscaling:groupName,Values=*%s*" --query  'Reservations[].Instances[].[PrivateIpAddress]' --output text'''
 MAX_TARGET_LIST_SIZE = 15
 
+
 def getTargets(asgFilter):
     cmd = DESCRIBE_EC2_CMD % asgFilter
     targetCall = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE)
     targets = targetCall.stdout.readlines()
     # Filter the target list, remove empty lines and dangling new lines
-    targets = list(filter(lambda t: len(t) >0 and t is not '\n', targets))
+    targets = list(filter(lambda t: len(t) > 0 and t is not '\n', targets))
     if len(targets) > MAX_TARGET_LIST_SIZE:
-        yes = set(['yes','y', 'ye', ''])
-        no = set(['no','n'])
-        print('Found more than %d targets, connecting to all can cause your system to run out of memory, continue? y/n' % MAX_TARGET_LIST_SIZE)
+        yes = set(['yes', 'y', 'ye', ''])
+        no = set(['no', 'n'])
+        print('Found more than %d targets, connecting to all can cause your system to run out of memory, continue? y/n' %
+              MAX_TARGET_LIST_SIZE)
         choice = raw_input().lower()
         if choice in yes:
             return targets
@@ -40,16 +42,21 @@ def getTargets(asgFilter):
             sys.exit(0)
     return targets
 
+
 def sshLinux(targets):
     linux_commands = ""
     if targets:
         for t in targets:
             if system == 'Linux':
-                linux_commands += '\'bash -c "ssh %s" || bash\' ' % t.strip('\n')
-        subprocess.check_output('/usr/local/bin/terminator-split -e %s localhost' % linux_commands, shell=True)
+                linux_commands += '\'bash -c "ssh %s" || bash\' ' % t.strip(
+                    '\n')
+        subprocess.check_output(
+            '/usr/local/bin/terminator-split -e %s localhost' % linux_commands, shell=True)
     else:
-        print('No matching targets founds for query:\n\t%s' % (DESCRIBE_EC2_CMD % asgFilter))
+        print('No matching targets founds for query:\n\t%s' %
+              (DESCRIBE_EC2_CMD % asgFilter))
         sys.exit(3)
+
 
 def sshDarwin(targets, asgFilter):
     if targets:
@@ -61,25 +68,29 @@ def sshDarwin(targets, asgFilter):
                 sshCommand = 'ssh ' + t.strip('\n')
                 panes.append(sshCommand)
 
-            destFilePath = os.path.expanduser('~/.itermocil/%s.yml' % asgFilter)
+            destFilePath = os.path.expanduser(
+                '~/.itermocil/%s.yml' % asgFilter)
             if not os.path.exists(os.path.dirname(destFilePath)):
                 try:
                     os.makedirs(os.path.dirname(destFilePath))
-                except OSError as exc: # Guard against race condition
+                except OSError as exc:  # Guard against race condition
                     if exc.errno != errno.EEXIST:
                         raise
             destFile = open(destFilePath, 'w+')
             yaml.dump(termConf, destFile, default_flow_style=True, indent=2)
             destFile.close()
 
-            subprocess.Popen('itermocil %s &> /dev/null' % asgFilter, shell=True, stdout=subprocess.PIPE)
+            subprocess.Popen('itermocil %s &> /dev/null' %
+                             asgFilter, shell=True, stdout=subprocess.PIPE)
         except yaml.YAMLError as exc:
             print('Failed to run: ')
             print(exc)
             sys.exit(2)
     else:
-        print('No matching targets founds for query:\n\t%s' % (DESCRIBE_EC2_CMD % asgFilter))
+        print('No matching targets founds for query:\n\t%s' %
+              (DESCRIBE_EC2_CMD % asgFilter))
         sys.exit(3)
+
 
 if len(sys.argv) is not 2:
     print('Usage: sshall <autoscaling group name>\n\tPartial name matches are supported')
@@ -91,10 +102,12 @@ if system == 'Darwin':
     # Check that itermocil is installed
     if not any(os.access(os.path.join(path, 'itermocil'), os.X_OK) for path in os.environ['PATH'].split(os.pathsep)):
         print('itermocil not found in system path. Installing itermocil first...')
-        brewInstall = subprocess.Popen('brew update && brew install TomAnthony/brews/itermocil', shell=True, stdout=subprocess.PIPE)
-        brewInstall.poll()
+        brewInstall = subprocess.Popen(
+            'brew update && brew install TomAnthony/brews/itermocil', shell=True, stdout=subprocess.PIPE)
+        brewInstall.wait()
+        final_output = brewInstall.stdout.read()
         if brewInstall.returncode is not 0:
-            print('Failed to install itermocil, please install it manually')
+            print('Failed to install itermocil, please install it manually with the command:\n\tbrew update && brew install TomAnthony/brews/itermocil')
             sys.exit(1)
 
     sshDarwin(getTargets(asgFilter), asgFilter)
@@ -108,7 +121,8 @@ elif system == 'Linux':
     try:
         imp.find_module('configobj')
     except ImportError:
-        print('python module configobj not found. Install using:\tsudo pip install configobj')
+        print(
+            'python module configobj not found. Install using:\tsudo pip install configobj')
         sys.exit(1)
 
     sshLinux(getTargets(asgFilter))
